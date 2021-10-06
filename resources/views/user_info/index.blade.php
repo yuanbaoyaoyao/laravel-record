@@ -26,8 +26,8 @@
                 <td>{{ $i->user }}</td>
                 <td>{{ $i->contact_phone }}</td>
                 <td>
-                  <button class="btn btn-primary">修改</button>
-                  <button class="btn btn-danger">删除</button>
+                    <a href="{{ route('user_info.edit', ['user_info' => $i->id]) }}" class="btn btn-primary">修改</a>
+                    <button class="btn btn-danger">删除</button>
                 </td>
               </tr>
             @endforeach

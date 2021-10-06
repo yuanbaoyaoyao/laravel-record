@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', '新增领用信息')
+@section('title', ($i->id?'修改':'新增').'领用信息')
 
 @section('content')
 <div class="row">
@@ -7,7 +7,7 @@
 <div class="card">
   <div class="card-header">
     <h2 class="text-center">
-      新增领用信息
+      {{$i->id?'修改':'新增'}}领用信息
     </h2>
   </div>
   <div class="card-body">
@@ -23,15 +23,15 @@
       </div>
     @endif
     <!-- 输出后端报错结束 -->
-      <form class="form-horizontal" role="form" action="{{route('user_info.store')}}" method="POST">
+    @if($i->id)
+
+    <form class="form-horizontal" role="form" action="{{route('user_info.update',['user_info'=>$i->id])}}" method="POST">
+        {{method_field('PUT')}}
+    @else
+    <form class="form-horizontal" role="form" action="{{route('user_info.store')}}" method="POST">
+    @endif
         <!-- 引入 csrf token 字段 -->
       {{ csrf_field() }}
-        <div class="form-group row">
-          <label class="col-form-label text-md-right col-sm-2">详细信息</label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" name="i" value="{{ old('i', $i->i) }}">
-          </div>
-        </div>
         <div class="form-group row">
           <label class="col-form-label text-md-right col-sm-2">部门</label>
           <div class="col-sm-9">
