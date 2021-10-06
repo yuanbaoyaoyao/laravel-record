@@ -18,5 +18,7 @@ Route::get('/', 'PagesController@root')->name('root');
 Auth::routes(['verify' => true]);
 
 Route::group(['middleware' => ['auth','verified']],function(){
-    Route::get('user_info', 'UserinfoController@index')->name('user_info.index');
+    Route::get('user_info', 'UserInfoController@index')->name('user_info.index');
+    Route::get('user_info/create','UserInfoController@create')->name('user_info.create');
+    Route::post('user_info','UserInfoController@store')->name('user_info.store');
 });

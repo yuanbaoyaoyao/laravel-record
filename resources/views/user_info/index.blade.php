@@ -5,7 +5,10 @@
   <div class="row">
     <div class="col-md-10 offset-md-1">
       <div class="card panel-default">
-        <div class="card-header">领用信息列表</div>
+        <div class="card-header">
+            领用信息列表
+            <a href="{{ route('user_info.create') }}" class="float-right">新增领用信息</a>
+        </div>
         <div class="card-body">
           <table class="table table-bordered table-striped">
             <thead>
@@ -13,6 +16,7 @@
               <th>部门</th>
               <th>使用人</th>
               <th>联系电话</th>
+              <th>操作</th>
             </tr>
             </thead>
             <tbody>
