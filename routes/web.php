@@ -23,4 +23,5 @@ Route::group(['middleware' => ['auth','verified']],function(){
     Route::post('user_info','UserInfoController@store')->name('user_info.store');
     Route::get('user_info/{user_info}','UserInfoController@edit')->name('user_info.edit');
     Route::put('user_info/{user_info}', 'UserInfoController@update')->name('user_info.update');
+    Route::delete('user_info/{user_info}', 'UserinfoController@destroy')->name('user_info.destroy');
 });

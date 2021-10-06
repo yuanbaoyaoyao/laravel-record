@@ -34,16 +34,26 @@ class UserInfoController extends Controller
 
     public function edit(UserInfo $user_info)
     {
+        $this->authorize('own',$user_info);
         return view('user_info.create_and_edit',['i'=>$user_info]);
     }
 
     public function update(UserInfo $user_info,UserInfoRequest $request)
     {
+        $this->authorize('own',$user_info);
         $user_info->update($request->only([
             'department',
             'user',
             'contact_phone'
         ]));
         return redirect()->route('user_info.index');
+    }
+
+    public function destroy(UserInfo $user_info)
+    {
+        $this->authorize('own',$user_info);
+        $user_info->delete();
+
+        return [];
     }
 }
