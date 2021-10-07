@@ -53,21 +53,21 @@ class ProductsController extends AdminController
      * @param mixed $id
      * @return Show
      */
-    protected function detail($id)
-    {
-        $show = new Show(Product::findOrFail($id));
+    // protected function detail($id)
+    // {
+    //     $show = new Show(Product::findOrFail($id));
 
-        $show->field('id', __('Id'));
-        $show->field('title', __('Title'));
-        $show->field('description', __('Description'));
-        $show->field('image', __('Image'));
-        $show->field('in_warehouse', __('In warehouse'));
-        $show->field('sold_count', __('Sold count'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
+    //     $show->field('id', __('Id'));
+    //     $show->field('title', __('Title'));
+    //     $show->field('description', __('Description'));
+    //     $show->field('image', __('Image'));
+    //     $show->field('in_warehouse', __('In warehouse'));
+    //     $show->field('sold_count', __('Sold count'));
+    //     $show->field('created_at', __('Created at'));
+    //     $show->field('updated_at', __('Updated at'));
 
-        return $show;
-    }
+    //     return $show;
+    // }
 
     /**
      * Make a form builder.
@@ -76,13 +76,25 @@ class ProductsController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new Product());
+        $form = new Form(new Product);
 
-        $form->text('title', __('Title'));
-        $form->textarea('description', __('Description'));
-        $form->image('image', __('Image'));
-        $form->switch('in_warehouse', __('In warehouse'))->default(1);
-        $form->number('sold_count', __('Sold count'));
+        $form->text('title', '耗材名称')->rules('required');
+
+        $form->image('image', '封面图片')->rules('required|image');
+
+        $form->quill('description', '耗材描述')->rules('required');
+
+        $form->radio('in_warehouse', '在库')->options(['1' => '是', '0'=> '否'])->default('0');
+
+        $form->hasMany('skus', 'SKU 列表', function (Form\NestedForm $form) {
+            $form->text('title', 'SKU 名称')->rules('required');
+            $form->text('description', 'SKU 描述')->rules('required');
+            $form->text('stock', '剩余库存')->rules('required|integer|min:0');
+        });
+
+        // $form->saving(function (Form $form) {
+        //     $form->model()->stock = collect($form->input('skus'))->where(Form::REMOVE_FLAG_NAME, 0)->min('stock') ?: 0;
+        // });
 
         return $form;
     }
