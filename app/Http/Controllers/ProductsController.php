@@ -10,7 +10,27 @@ class ProductsController extends Controller
     //
     public function index(Request $request)
     {
-        $products = Product::query()->where('in_warehouse',true)->paginate(10);
-        return view('products.index',['products'=>$products]);
+        $builder = Product::query()->where('in_warehouse', true);
+        if ($search = $request->input('search', '')) {
+            $like = '%'.$search.'%';
+            // 模糊搜索商品标题、商品详情、SKU 标题、SKU描述
+            $builder->where(function ($query) use ($like) {
+                $query->where('title', 'like', $like)
+                    ->orWhere('description', 'like', $like)
+                    ->orWhereHas('skus', function ($query) use ($like) {
+                        $query->where('title', 'like', $like)
+                            ->orWhere('description', 'like', $like);
+                    });
+            });
+        }
+
+        $products = $builder->paginate(10);
+
+        return view('products.index', [
+            'products' => $products,
+            'filters'  => [
+                'search' => $search,
+            ],
+        ]);
     }
 }
