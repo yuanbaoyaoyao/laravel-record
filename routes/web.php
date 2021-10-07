@@ -24,4 +24,6 @@ Route::group(['middleware' => ['auth','verified']],function(){
     Route::get('user_info/{user_info}','UserInfoController@edit')->name('user_info.edit');
     Route::put('user_info/{user_info}', 'UserInfoController@update')->name('user_info.update');
     Route::delete('user_info/{user_info}', 'UserinfoController@destroy')->name('user_info.destroy');
+    Route::redirect('/', '/products')->name('root');
+    Route::get('products', 'ProductsController@index')->name('products.index');
 });
