@@ -10,10 +10,10 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'description', 'image', 'in_warehourse', 'sold_count'
+        'title', 'description', 'image', 'in_warehouse', 'sold_count'
     ];
     protected $casts=[
-        'in_warehourse' => 'boolean',
+        'in_warehouse' => 'boolean',
     ];
 
     public function skus()
