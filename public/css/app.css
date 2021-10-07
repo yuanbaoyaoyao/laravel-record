@@ -10050,3 +10050,109 @@ body {
 .footer .container p a {
   color: inherit;
 }
+
+.products-index-page .pagination {
+  margin-right: 5px;
+}
+.products-index-page .search-form {
+  padding: 0 5px 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+.products-index-page .products-list {
+  padding: 0 15px;
+}
+.products-index-page .products-list .product-item {
+  padding: 0 5px;
+  margin-bottom: 10px;
+}
+.products-index-page .products-list .product-item .product-content {
+  border: 1px solid #eee;
+}
+.products-index-page .products-list .product-item .product-content .top {
+  padding: 5px;
+}
+.products-index-page .products-list .product-item .product-content .top img {
+  width: 100%;
+}
+.products-index-page .products-list .product-item .product-content .top .title {
+  margin-top: 10px;
+  height: 32px;
+  line-height: 12px;
+  max-height: 32px;
+}
+.products-index-page .products-list .product-item .product-content .top .title a {
+  font-size: 12px;
+  line-height: 14px;
+  color: #333;
+  text-decoration: none;
+}
+
+.products-show-page .cover {
+  width: 100%;
+  border: solid 1px #eee;
+  padding: 30px 0;
+}
+.products-show-page .title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.products-show-page .skus > label {
+  color: #999;
+  font-size: 12px;
+  padding: 0 10px 0 10px;
+}
+.products-show-page .skus .btn-group {
+  margin-left: -10px;
+}
+.products-show-page .skus .btn-group label {
+  border-radius: 0 !important;
+  margin: 1px 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+}
+.products-show-page .skus .btn-group .btn {
+  border: 1px solid #ccc;
+}
+.products-show-page .skus .btn-group .btn.active, .products-show-page .skus .btn-group .btn:hover {
+  margin-top: 0px !important;
+  background: #fff !important;
+  border: 2px solid red !important;
+}
+.products-show-page .skus .btn-group .btn.focus {
+  outline: 0 !important;
+}
+.products-show-page .cart_amount {
+  font-size: 12px;
+  color: #888;
+  margin: 10px 0 20px;
+}
+.products-show-page .cart_amount label {
+  color: #999;
+  font-size: 12px;
+  padding: 0 10px 0 10px;
+}
+.products-show-page .cart_amount input {
+  width: 50px;
+  display: inline-block;
+  border-radius: 0 !important;
+}
+.products-show-page .cart_amount span {
+  color: #999;
+  font-size: 12px;
+  padding-left: 10px;
+}
+.products-show-page .buttons {
+  padding-left: 44px;
+}
+.products-show-page .product-detail {
+  margin: 20px 0;
+}
+.products-show-page .product-detail .nav.nav-tabs > li > a {
+  border-radius: 0 !important;
+}
+.products-show-page .product-detail .tab-content {
+  border: 1px solid #eee;
+  padding: 20px;
+}

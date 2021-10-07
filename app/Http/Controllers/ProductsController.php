@@ -33,4 +33,13 @@ class ProductsController extends Controller
             ],
         ]);
     }
+
+    public function show(Product $product, Request $request)
+    {
+        if (!$product->in_warehouse) {
+            throw new \Exception('耗材未在库');
+        }
+
+        return view('products.show', ['product' => $product]);
+    }
 }
