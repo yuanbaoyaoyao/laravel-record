@@ -18,12 +18,12 @@ Route::get('/', 'PagesController@root')->name('root');
 Auth::routes(['verify' => true]);
 
 Route::group(['middleware' => ['auth','verified']],function(){
-    Route::get('user_info', 'UserInfoController@index')->name('user_info.index');
-    Route::get('user_info/create','UserInfoController@create')->name('user_info.create');
-    Route::post('user_info','UserInfoController@store')->name('user_info.store');
-    Route::get('user_info/{user_info}','UserInfoController@edit')->name('user_info.edit');
-    Route::put('user_info/{user_info}', 'UserInfoController@update')->name('user_info.update');
-    Route::delete('user_info/{user_info}', 'UserinfoController@destroy')->name('user_info.destroy');
+    Route::get('user_addresses', 'UserAddressesController@index')->name('user_addresses.index');
+    Route::get('user_addresses/create','UserAddressesController@create')->name('user_addresses.create');
+    Route::post('user_addresses','UserAddressesController@store')->name('user_addresses.store');
+    Route::get('user_addresses/{user_addresses}','UserAddressesController@edit')->name('user_addresses.edit');
+    Route::put('user_addresses/{user_addresses}', 'UserAddressesController@update')->name('user_addresses.update');
+    Route::delete('user_addresses/{user_addresses}', 'UserAddressesController@destroy')->name('user_addresses.destroy');
     Route::redirect('/', '/products')->name('root');
     Route::get('products', 'ProductsController@index')->name('products.index');
     Route::get('products/{product}', 'ProductsController@show')->name('products.show');

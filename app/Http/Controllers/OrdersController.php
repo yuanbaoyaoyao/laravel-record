@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderRequest;
 use App\Models\ProductSku;
-use App\Models\Userinfo;
+use App\Models\UserAddress;
 use App\Models\Order;
 use Carbon\Carbon;
+use App\Jobs\CloseOrder;
 use App\Exceptions\InvalidRequestException;
 
 
@@ -17,15 +18,15 @@ class OrdersController extends Controller
         $user  = $request->user();
         // 开启一个数据库事务
         $order = \DB::transaction(function () use ($user, $request) {
-            $info = UserInfo::find($request->input('info_id'));
+            $address = Useraddress::find($request->input('address_id'));
             // 更新此地址的最后使用时间
-            $info->update(['last_used_at' => Carbon::now()]);
+            $address->update(['last_used_at' => Carbon::now()]);
             // 创建一个订单
             $order = new Order([
-                'info' => [ // 将地址信息放入订单中
-                                    'info' => $info->department,
-                                    'user' => $info->user,
-                                    'contact_phone' => $info->contact_phone,
+                'address' => [ // 将地址信息放入订单中
+                                    'address' => $address->department,
+                                    'user' => $address->user,
+                                    'contact_phone' => $address->contact_phone,
                 ],
                 'remark' => $request->input('remark'),
             ]);
@@ -46,7 +47,7 @@ class OrdersController extends Controller
                 $item->productSku()->associate($sku);
                 $item->save();
                 if ($sku->decreaseStock($data['amount']) <= 0) {
-                    throw new InvalidRequestException('该商品库存不足');
+                    throw new InvalidRequestException('该耗材库存不足');
                 }
             }
 
@@ -56,7 +57,7 @@ class OrdersController extends Controller
 
             return $order;
         });
-
+        $this->dispatch(new CloseOrder($order, config('app.order_ttl')));
         return $order;
     }
 }

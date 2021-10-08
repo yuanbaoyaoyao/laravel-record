@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AddCartRequest;
 use App\Models\CartItem;
 use App\Models\ProductSku;
+use App\Models\UserAddress;
 
 
 class CartController extends Controller
@@ -14,9 +15,9 @@ class CartController extends Controller
     public function index(Request $request)
     {
         $cartItems = $request->user()->cartItems()->with(['productSku.product'])->get();
-        $info = $request->user()->info()->orderBy('last_used_at', 'desc')->get();
+        $addresses = $request->user()->addresses()->orderBy('last_used_at', 'desc')->get();
 
-        return view('cart.index', ['cartItems' => $cartItems, 'info' => $info]);
+        return view('cart.index', ['cartItems' => $cartItems, 'addresses' => $addresses]);
     }
 
     public function add(AddCartRequest $request)

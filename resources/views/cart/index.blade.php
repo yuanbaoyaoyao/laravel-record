@@ -22,7 +22,7 @@
           <td>
             <input type="checkbox" name="select" value="{{ $item->productSku->id }}" {{ $item->productSku->product->in_warehouse ? 'checked' : 'disabled' }}>
           </td>
-          <td class="product_info">
+          <td class="product_address">
             <div class="preview">
               <a target="_blank" href="{{ route('products.show', [$item->productSku->product_id]) }}">
                 <img src="{{ $item->productSku->product->image_url }}">
@@ -54,9 +54,9 @@
           <div class="form-group row">
             <label class="col-form-label col-sm-3 text-md-right">选择用户信息</label>
             <div class="col-sm-9 col-md-7">
-              <select class="form-control" name="info">
-                @foreach($info as $i)
-                  <option value="{{ $i->id }}">{{ $i->department }} {{ $i->user }} {{ $i->contact_phone }}</option>
+              <select class="form-control" name="address">
+                @foreach($addresses as $address)
+                  <option value="{{ $address->id }}">{{ $address->department }} {{ $address->user }} {{ $address->contact_phone }}</option>
                 @endforeach
               </select>
             </div>
@@ -111,7 +111,7 @@
     $('.btn-create-order').click(function () {
       // 构建请求参数，将用户选择的地址的 id 和备注内容写入请求参数
       var req = {
-        info_id: $('#order-form').find('select[name=info]').val(),
+        address_id: $('#order-form').find('select[name=address]').val(),
         items: [],
         remark: $('#order-form').find('textarea[name=remark]').val(),
       };

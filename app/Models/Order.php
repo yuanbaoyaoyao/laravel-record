@@ -35,15 +35,15 @@ class Order extends Model
 
     protected $fillable = [
         'no',
-        'info',
+        'address',
         // 'total_amount',
         'remark',
-        // 'paid_at',
+        'confirmed_at',
         // 'payment_method',
         // 'payment_no',
         // 'refund_status',
         // 'refund_no',
-        // 'closed',
+        'closed',
         // 'reviewed',
         'ship_status',
         'ship_data',
@@ -51,16 +51,16 @@ class Order extends Model
     ];
 
     protected $casts = [
-        // 'closed'    => 'boolean',
+        'closed'    => 'boolean',
         // 'reviewed'  => 'boolean',
-        'info'   => 'json',
+        'address'   => 'json',
         'ship_data' => 'json',
         'extra'     => 'json',
     ];
 
-    // protected $dates = [
-    //     'paid_at',
-    // ];
+    protected $dates = [
+        'confirmed_at',
+    ];
 
     protected static function boot()
     {
