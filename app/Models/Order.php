@@ -20,11 +20,11 @@ class Order extends Model
     const SHIP_STATUS_RECEIVED = 'received';
 
     public static $refundStatusMap = [
-        self::REFUND_STATUS_PENDING    => '未退款',
-        self::REFUND_STATUS_APPLIED    => '已申请退款',
-        self::REFUND_STATUS_PROCESSING => '退款中',
-        self::REFUND_STATUS_SUCCESS    => '退款成功',
-        self::REFUND_STATUS_FAILED     => '退款失败',
+        self::REFUND_STATUS_PENDING    => '未退货',
+        self::REFUND_STATUS_APPLIED    => '已申请退货',
+        self::REFUND_STATUS_PROCESSING => '退货中',
+        self::REFUND_STATUS_SUCCESS    => '退货成功',
+        self::REFUND_STATUS_FAILED     => '退货失败',
     ];
 
     public static $shipStatusMap = [

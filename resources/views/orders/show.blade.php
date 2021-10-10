@@ -47,11 +47,11 @@
         <div class="line"><div class="line-label">需求单编号：</div><div class="line-value">{{ $order->no }}</div></div>
         @if($order->confirmed_at && $order->refund_status !== \App\Models\Order::REFUND_STATUS_PENDING)
         <div class="line">
-          <div class="line-label">退款状态：</div>
+          <div class="line-label">退货状态：</div>
           <div class="line-value">{{ \App\Models\Order::$refundStatusMap[$order->refund_status] }}</div>
         </div>
         <div class="line">
-          <div class="line-label">退款理由：</div>
+          <div class="line-label">退货理由：</div>
           <div class="line-value">{{ $order->extra['refund_reason'] }}</div>
         </div>
         @endif
@@ -65,11 +65,11 @@
           <span>需求单状态：</span>
           <div class="value">
             @if($order->confirmed_at)
-              {{-- @if($order->refund_status === \App\Models\Order::REFUND_STATUS_PENDING) --}}
+              @if($order->refund_status === \App\Models\Order::REFUND_STATUS_PENDING)
                 已确认
-              {{-- @else
+              @else
                 {{ \App\Models\Order::$refundStatusMap[$order->refund_status] }}
-              @endif --}}
+              @endif
             @elseif($order->closed)
               已关闭
             @else
@@ -94,11 +94,18 @@
 
             @if($order->confirmed_at && $order->refund_status === \App\Models\Order::REFUND_STATUS_PENDING)
             <div class="refund-button">
-              <button class="btn btn-sm btn-danger" id="btn-apply-refund">申请退款</button>
+              <button class="btn btn-sm btn-danger" id="btn-apply-refund">申请退货</button>
             </div>
             @endif
           </div>
         </div>
+
+        @if(isset($order->extra['refund_disagree_reason']))
+        <div>
+          <span>拒绝退款理由：</span>
+          <div class="value">{{ $order->extra['refund_disagree_reason'] }}</div>
+        </div>
+        @endif
       </div>
     </div>
   </div>
@@ -106,30 +113,6 @@
 </div>
 </div>
 @endsection
-
-{{-- @section('scriptsAfterJs')
-<script>
-  $(document).ready(function() {
-    // 微信支付按钮事件
-    $('#btn-confirm').click(function() {
-      swal({
-        // content 参数可以是一个 DOM 元素，这里我们用 jQuery 动态生成一个 img 标签，并通过 [0] 的方式获取到 DOM 元素
-        content: $('<img src="{{ route('confirmation.store', ['order' => $order->id]) }}" />')[0],
-        // buttons 参数可以设置按钮显示的文案
-        buttons: ['关闭', '已完成付款'],
-      })
-      .then(function(result) {
-      // 如果用户点击了 已完成付款 按钮，则重新加载页面
-        if (result) {
-          location.reload();
-        }
-      })
-    });
-
-
-  });
-</script>
-@endsection --}}
 @section('scriptsAfterJs')
 <script>
   $(document).ready(function() {
@@ -156,21 +139,21 @@
       });
     });
 
-    // 退款按钮点击事件
+    // 退货按钮点击事件
     $('#btn-apply-refund').click(function () {
       swal({
-        text: '请输入退款理由',
+        text: '请输入退货理由',
         content: "input",
       }).then(function (input) {
         // 当用户点击 swal 弹出框上的按钮时触发这个函数
         if(!input) {
-          swal('退款理由不可空', '', 'error');
+          swal('退货理由不可空', '', 'error');
           return;
         }
-        // 请求退款接口
+        // 请求退货接口
         axios.post('{{ route('orders.apply_refund', [$order->id]) }}', {reason: input})
           .then(function () {
-            swal('申请退款成功', '', 'success').then(function () {
+            swal('申请退货成功', '', 'success').then(function () {
               // 用户点击弹框上按钮时重新加载页面
               location.reload();
             });
