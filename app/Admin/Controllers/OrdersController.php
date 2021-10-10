@@ -6,6 +6,8 @@ use App\Models\Order;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
+use Illuminate\Http\Request;
+use App\Exceptions\InvalidRequestException;
 
 
 class OrdersController extends AdminController
@@ -50,8 +52,38 @@ class OrdersController extends AdminController
     public function show($id, Content $content)
     {
         return $content
-            ->header('查看订单')
+            ->header('查看需求单')
             // body 方法可以接受 Laravel 的视图作为参数
             ->body(view('admin.orders.show', ['order' => Order::find($id)]));
+    }
+
+        public function ship(Order $order, Request $request)
+    {
+        // 判断当前需求单是否已支付
+        if (!$order->confirmed_at) {
+            throw new InvalidRequestException('该需求单未确认');
+        }
+        // 判断当前需求单发放状态是否为未发放
+        if ($order->ship_status !== Order::SHIP_STATUS_PENDING) {
+            throw new InvalidRequestException('该需求单已发放');
+        }
+        // Laravel 5.5 之后 validate 方法可以返回校验过的值
+        // $data = $this->validate($request, [
+        //     'express_company' => ['required'],
+        //     'express_no'      => ['required'],
+        // ], [], [
+        //     'express_company' => '物流公司',
+        //     'express_no'      => '物流单号',
+        // ]);
+        // 将需求单发放状态改为已发放，并存入物流信息
+        $order->update([
+            'ship_status' => Order::SHIP_STATUS_DELIVERED,
+            // 我们在 Order 模型的 $casts 属性里指明了 ship_data 是一个数组
+            // 因此这里可以直接把数组传过去
+            // 'ship_data'   => $data,
+        ]);
+
+        // 返回上一页
+        return redirect()->back();
     }
 }
