@@ -10,7 +10,6 @@ class OrderItem extends Model
     use HasFactory;
 
     protected $fillable = ['amount'];
-    // protected $dates = ['reviewed_at'];
     public $timestamps = false;
 
     public function product()

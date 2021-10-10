@@ -109,17 +109,13 @@
     });
 
     $('.btn-create-order').click(function () {
-      // 构建请求参数，将用户选择的领用信息的 id 和备注内容写入请求参数
       var req = {
         address_id: $('#order-form').find('select[name=address]').val(),
         items: [],
         remark: $('#order-form').find('textarea[name=remark]').val(),
       };
-      // 遍历 <table> 标签内所有带有 data-id 属性的 <tr> 标签，也就是每一个购物车中的耗材 SKU
       $('table tr[data-id]').each(function () {
-        // 获取当前行的单选框
         var $checkbox = $(this).find('input[name=select][type=checkbox]');
-        // 如果单选框被禁用或者没有被选中则跳过
         if ($checkbox.prop('disabled') || !$checkbox.prop('checked')) {
           return;
         }
@@ -129,7 +125,6 @@
         if ($input.val() == 0 || isNaN($input.val())) {
           return;
         }
-        // 把 SKU id 和数量存入请求参数数组中
         req.items.push({
           sku_id: $(this).data('id'),
           amount: $input.val(),
@@ -144,7 +139,6 @@
                 });
         }, function (error) {
           if (error.response.status === 422) {
-            // http 状态码为 422 代表用户输入校验失败
             var html = '<div>';
             _.each(error.response.data.errors, function (errors) {
               _.each(errors, function (error) {
@@ -154,7 +148,6 @@
             html += '</div>';
             swal({content: $(html)[0], icon: 'error'})
           } else {
-            // 其他情况应该是系统挂了
             swal('系统错误', '', 'error');
           }
         });

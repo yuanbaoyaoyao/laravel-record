@@ -7,7 +7,6 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Laravel Record') - 耗材管理系统</title>
-    <!-- 样式 -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
@@ -18,7 +17,6 @@
         </div>
         @include('layouts._footer')
     </div>
-    <!-- JS 脚本 -->
     <script src="{{ mix('js/app.js') }}"></script>
     @yield('scriptsAfterJs')
 </body>

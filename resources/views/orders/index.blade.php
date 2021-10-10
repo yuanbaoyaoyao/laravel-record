@@ -20,9 +20,7 @@
                 <thead>
                 <tr>
                   <th>耗材信息</th>
-                  {{-- <th class="text-center">单价</th> --}}
                   <th class="text-center">数量</th>
-                  {{-- <th class="text-center">需求单总价</th> --}}
                   <th class="text-center">状态</th>
                   <th class="text-center">操作</th>
                 </tr>
@@ -42,17 +40,15 @@
                         <span class="sku-title">{{ $item->productSku->title }}</span>
                       </div>
                     </td>
-                    {{-- <td class="sku-price text-center">￥{{ $item->price }}</td> --}}
                     <td class="sku-amount text-center">{{ $item->amount }}</td>
                     @if($index === 0)
-                      {{-- <td rowspan="{{ count($order->items) }}" class="text-center total-amount">￥{{ $order->total_amount }}</td> --}}
                       <td rowspan="{{ count($order->items) }}" class="text-center">
                         @if($order->confirmed_at)
-                          {{-- @if($order->refund_status === \App\Models\Order::REFUND_STATUS_PENDING) --}}
+                          @if($order->refund_status === \App\Models\Order::REFUND_STATUS_PENDING)
                             已确认
-                          {{-- @else
+                          @else
                             {{ \App\Models\Order::$refundStatusMap[$order->refund_status] }}
-                          @endif --}}
+                            @endif
                         @elseif($order->closed)
                           已关闭
                         @else

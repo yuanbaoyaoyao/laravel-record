@@ -12,12 +12,6 @@
       </div>
       <div class="col-7">
         <div class="title">{{ $product->title }}</div>
-        {{-- <div class="price"><label>价格</label><em>￥</em><span>{{ $product->price }}</span></div> --}}
-        {{-- <div class="sales_and_reviews">
-          <div class="sold_count">累计发放量 <span class="count">{{ $product->sold_count }}</span></div>
-          <div class="review_count">累计评价 <span class="count">{{ $product->review_count }}</span></div>
-          <div class="rating" title="评分 {{ $product->rating }}">评分 <span class="count">{{ str_repeat('★', floor($product->rating)) }}{{ str_repeat('☆', 5 - floor($product->rating)) }}</span></div>
-        </div> --}}
         <div class="skus">
           <label>选择</label>
           <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -36,7 +30,6 @@
         </div>
         <div class="cart_amount"><label>数量</label><input type="text" class="form-control form-control-sm" value="1"><span>件</span><span class="stock"></span></div>
         <div class="buttons">
-          {{-- <button class="btn btn-success btn-favor">❤ 收藏</button> --}}
           <button class="btn btn-primary btn-add-to-cart">加入需求单</button>
         </div>
       </div>
@@ -46,9 +39,6 @@
         <li class="nav-item">
           <a class="nav-link active" href="#product-detail-tab" aria-controls="product-detail-tab" role="tab" data-toggle="tab" aria-selected="true">耗材详情</a>
         </li>
-        {{-- <li class="nav-item">
-          <a class="nav-link" href="#product-reviews-tab" aria-controls="product-reviews-tab" role="tab" data-toggle="tab" aria-selected="false">用户评价</a>
-        </li> --}}
       </ul>
       <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="product-detail-tab">
@@ -73,17 +63,17 @@
     });
     $('.btn-add-to-cart').click(function () {
 
-    // 请求加入购物车接口
+    // 请求加入需求单接口
     axios.post('{{ route('cart.add') }}', {
     sku_id: $('label.active input[name=skus]').val(),
     amount: $('.cart_amount input').val(),
     })
-    .then(function () { // 请求成功执行此回调
-        swal('加入购物车成功', '', 'success')
+    .then(function () {
+        swal('加入需求单成功', '', 'success')
         .then(function() {
           location.href = '{{ route('cart.index') }}';
         });
-    }, function (error) { // 请求失败执行此回调
+    }, function (error) {
         if (error.response.status === 401) {
 
         swal('请先登录', '', 'error');

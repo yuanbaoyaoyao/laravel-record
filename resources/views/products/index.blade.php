@@ -19,7 +19,6 @@
       <table class="table table-striped">
         <thead>
         <tr>
-          {{-- <th><input type="checkbox" id="select-all"></th> --}}
           <th>#</th>
           <th>图片</th>
           <th>耗材名称</th>

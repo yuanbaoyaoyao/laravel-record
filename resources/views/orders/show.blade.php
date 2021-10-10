@@ -13,9 +13,7 @@
       <thead>
       <tr>
         <th>耗材信息</th>
-        {{-- <th class="text-center">单价</th> --}}
         <th class="text-center">数量</th>
-        {{-- <th class="text-right item-amount">小计</th> --}}
       </tr>
       </thead>
       @foreach($order->items as $index => $item)
@@ -33,9 +31,7 @@
               <span class="sku-title">{{ $item->productSku->title }}</span>
             </div>
           </td>
-          {{-- <td class="sku-price text-center vertical-middle">￥{{ $item->price }}</td> --}}
           <td class="sku-amount text-center vertical-middle">{{ $item->amount }}</td>
-          {{-- <td class="item-amount text-right vertical-middle">￥{{ number_format($item->price * $item->amount, 2, '.', '') }}</td> --}}
         </tr>
       @endforeach
       <tr><td colspan="4"></td></tr>
@@ -57,10 +53,6 @@
         @endif
       </div>
       <div class="order-summary text-right">
-        {{-- <div class="total-amount">
-          <span>需求单总价：</span>
-          <div class="value">￥{{ $order->total_amount }}</div>
-        </div> --}}
         <div>
           <span>需求单状态：</span>
           <div class="value">
@@ -79,15 +71,11 @@
             @if(!$order->confirmed_at && !$order->closed)
             <div class="confirmation-buttons">
               <a class="btn btn-primary btn-sm " href="{{ route('confirmation.store', ['order' => $order->id]) }}">确认需求单</a>
-              {{-- {{method_field('PUT')}} --}}
-
-              {{-- <button class="btn btn-sm btn-success" id='btn-confirm'>确认需求单</button> --}}
             </div>
             @endif
             <!-- 如果订单的发货状态为已发货则展示确认收货按钮 -->
             @if($order->ship_status === \App\Models\Order::SHIP_STATUS_DELIVERED)
             <div class="receive-button">
-              <!-- 将原本的表单替换成下面这个按钮 -->
               <button type="button" id="btn-receive" class="btn btn-sm btn-success">确认收货</button>
             </div>
             @endif
@@ -116,7 +104,6 @@
 @section('scriptsAfterJs')
 <script>
   $(document).ready(function() {
-    // 确认收货按钮点击事件
     $('#btn-receive').click(function() {
       // 弹出确认框
       swal({
@@ -126,20 +113,16 @@
         buttons: ['取消', '确认收到'],
       })
       .then(function(ret) {
-        // 如果点击取消按钮则不做任何操作
         if (!ret) {
           return;
         }
-        // ajax 提交确认操作
         axios.post('{{ route('orders.received', [$order->id]) }}')
           .then(function () {
-            // 刷新页面
             location.reload();
           })
       });
     });
 
-    // 退货按钮点击事件
     $('#btn-apply-refund').click(function () {
       swal({
         text: '请输入退货理由',
@@ -150,11 +133,9 @@
           swal('退货理由不可空', '', 'error');
           return;
         }
-        // 请求退货接口
         axios.post('{{ route('orders.apply_refund', [$order->id]) }}', {reason: input})
           .then(function () {
             swal('申请退货成功', '', 'success').then(function () {
-              // 用户点击弹框上按钮时重新加载页面
               location.reload();
             });
           });

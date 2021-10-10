@@ -15,14 +15,12 @@ class CartService
     public function add($skuId, $amount)
     {
         $user = Auth::user();
-        // 从数据库中查询该耗材是否已经在购物车中
+        // 从数据库中查询该耗材是否已经在需求单中
         if ($item = $user->cartItems()->where('product_sku_id', $skuId)->first()) {
-            // 如果存在则直接叠加耗材数量
             $item->update([
                 'amount' => $item->amount + $amount,
             ]);
         } else {
-            // 否则创建一个新的购物车记录
             $item = new CartItem(['amount' => $amount]);
             $item->user()->associate($user);
             $item->productSku()->associate($skuId);

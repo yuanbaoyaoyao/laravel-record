@@ -78,26 +78,20 @@ class OrdersController extends AdminController
 
     public function handleRefund(Order $order, HandleRefundRequest $request)
     {
-        // 判断需求单状态是否正确
         if ($order->refund_status !== Order::REFUND_STATUS_APPLIED) {
             throw new InvalidRequestException('需求单状态不正确');
         }
-        // 是否同意退货
         if ($request->input('agree')) {
-            // 同意退货的逻辑这里先留空
             $extra = $order->extra ?: [];
             unset($extra['refund_disagree_reason']);
             $order->update([
                 'extra' => $extra,
             ]);
-            // 调用退货逻辑
             $this->_refundOrder($order);
             // todo
         } else {
-            // 将拒绝退货理由放到需求单的 extra 字段中
             $extra = $order->extra ?: [];
             $extra['refund_disagree_reason'] = $request->input('reason');
-            // 将需求单的退货状态改为未退货
             $order->update([
                 'refund_status' => Order::REFUND_STATUS_PENDING,
                 'extra'         => $extra,

@@ -70,10 +70,6 @@ class ProductsController extends AdminController
             $form->text('stock', '剩余库存')->rules('required|integer|min:0');
         });
 
-        // $form->saving(function (Form $form) {
-        //     $form->model()->stock = collect($form->input('skus'))->where(Form::REMOVE_FLAG_NAME, 0)->min('stock') ?: 0;
-        // });
-
         return $form;
     }
 }

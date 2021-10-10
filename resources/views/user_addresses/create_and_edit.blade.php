@@ -11,7 +11,6 @@
     </h2>
   </div>
   <div class="card-body">
-    <!-- 输出后端报错开始 -->
     @if (count($errors) > 0)
       <div class="alert alert-danger">
         <h4>有错误发生：</h4>
@@ -22,7 +21,6 @@
         </ul>
       </div>
     @endif
-    <!-- 输出后端报错结束 -->
     @if($address->id)
 
     <form class="form-horizontal" role="form" action="{{route('user_addresses.update',['user_addresses'=>$address->id])}}" method="POST">
@@ -30,7 +28,6 @@
     @else
     <form class="form-horizontal" role="form" action="{{route('user_addresses.store')}}" method="POST">
     @endif
-        <!-- 引入 csrf token 字段 -->
       {{ csrf_field() }}
         <div class="form-group row">
           <label class="col-form-label text-md-right col-sm-2">部门</label>
