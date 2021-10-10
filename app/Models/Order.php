@@ -9,23 +9,23 @@ class Order extends Model
 {
     use HasFactory;
 
-    // const REFUND_STATUS_PENDING = 'pending';
-    // const REFUND_STATUS_APPLIED = 'applied';
-    // const REFUND_STATUS_PROCESSING = 'processing';
-    // const REFUND_STATUS_SUCCESS = 'success';
-    // const REFUND_STATUS_FAILED = 'failed';
+    const REFUND_STATUS_PENDING = 'pending';
+    const REFUND_STATUS_APPLIED = 'applied';
+    const REFUND_STATUS_PROCESSING = 'processing';
+    const REFUND_STATUS_SUCCESS = 'success';
+    const REFUND_STATUS_FAILED = 'failed';
 
     const SHIP_STATUS_PENDING = 'pending';
     const SHIP_STATUS_DELIVERED = 'delivered';
     const SHIP_STATUS_RECEIVED = 'received';
 
-    // public static $refundStatusMap = [
-    //     self::REFUND_STATUS_PENDING    => '未退款',
-    //     self::REFUND_STATUS_APPLIED    => '已申请退款',
-    //     self::REFUND_STATUS_PROCESSING => '退款中',
-    //     self::REFUND_STATUS_SUCCESS    => '退款成功',
-    //     self::REFUND_STATUS_FAILED     => '退款失败',
-    // ];
+    public static $refundStatusMap = [
+        self::REFUND_STATUS_PENDING    => '未退款',
+        self::REFUND_STATUS_APPLIED    => '已申请退款',
+        self::REFUND_STATUS_PROCESSING => '退款中',
+        self::REFUND_STATUS_SUCCESS    => '退款成功',
+        self::REFUND_STATUS_FAILED     => '退款失败',
+    ];
 
     public static $shipStatusMap = [
         self::SHIP_STATUS_PENDING   => '未发货',
@@ -41,8 +41,8 @@ class Order extends Model
         'confirmed_at',
         // 'confirmation_method',
         // 'confirmation_no',
-        // 'refund_status',
-        // 'refund_no',
+        'refund_status',
+        'refund_no',
         'closed',
         // 'reviewed',
         'ship_status',

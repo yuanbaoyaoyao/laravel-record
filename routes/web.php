@@ -37,5 +37,6 @@ Route::group(['middleware' => ['auth','verified']],function(){
     // Route::post('orders/{order}', 'OrdersController@update')->name('orders.update');
     Route::get('orders/{order}', 'OrdersController@show')->name('orders.show');
     Route::get('confirmation/{order}/store', 'ConfirmationController@store')->name('confirmation.store');
+    Route::post('orders/{order}/apply_refund', 'OrdersController@applyRefund')->name('orders.apply_refund');
 
 });
