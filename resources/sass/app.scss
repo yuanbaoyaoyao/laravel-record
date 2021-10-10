@@ -266,6 +266,10 @@ body {
     font-size: 12px;
     .vertical-middle {
       vertical-align: middle;
+      .confirmation-buttons {
+        margin-top: 10px;
+        padding-right: 10px;
+      }
     }
     .product-info {
       display: flex;
@@ -327,4 +331,5 @@ body {
     //     padding-right: 20px;
     //   }
     // }
+
   }

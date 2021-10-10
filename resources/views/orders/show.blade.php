@@ -54,16 +54,31 @@
         <div>
           <span>需求单状态：</span>
           <div class="value">
-            @if($order->paid_at)
-              @if($order->refund_status === \App\Models\Order::REFUND_STATUS_PENDING)
+            @if($order->confirmed_at)
+              {{-- @if($order->refund_status === \App\Models\Order::REFUND_STATUS_PENDING) --}}
                 已确认
-              @else
+              {{-- @else
                 {{ \App\Models\Order::$refundStatusMap[$order->refund_status] }}
-              @endif
+              @endif --}}
             @elseif($order->closed)
               已关闭
             @else
               未确认
+            @endif
+
+            @if(!$order->confirmed_at && !$order->closed)
+            <div class="confirmation-buttons">
+              <a class="btn btn-primary btn-sm " href="{{ route('confirmation.store', ['order' => $order->id]) }}">确认需求单</a>
+              {{-- {{method_field('PUT')}} --}}
+
+              {{-- <button class="btn btn-sm btn-success" id='btn-confirm'>确认需求单</button> --}}
+            </div>
+            @endif
+            <!-- 如果订单的发货状态为已发货则展示确认收货按钮 -->
+            @if($order->ship_status === \App\Models\Order::SHIP_STATUS_DELIVERED)
+            <div class="receive-button">
+              <button type="button" id="btn-receive" class="btn btn-sm btn-success">确认收货</button>
+            </div>
             @endif
           </div>
         </div>
@@ -74,3 +89,27 @@
 </div>
 </div>
 @endsection
+
+{{-- @section('scriptsAfterJs')
+<script>
+  $(document).ready(function() {
+    // 微信支付按钮事件
+    $('#btn-confirm').click(function() {
+      swal({
+        // content 参数可以是一个 DOM 元素，这里我们用 jQuery 动态生成一个 img 标签，并通过 [0] 的方式获取到 DOM 元素
+        content: $('<img src="{{ route('confirmation.store', ['order' => $order->id]) }}" />')[0],
+        // buttons 参数可以设置按钮显示的文案
+        buttons: ['关闭', '已完成付款'],
+      })
+      .then(function(result) {
+      // 如果用户点击了 已完成付款 按钮，则重新加载页面
+        if (result) {
+          location.reload();
+        }
+      })
+    });
+
+
+  });
+</script>
+@endsection --}}

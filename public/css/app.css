@@ -14840,6 +14840,10 @@ body {
 .orders-show-page .vertical-middle {
   vertical-align: middle;
 }
+.orders-show-page .vertical-middle .confirmation-buttons {
+  margin-top: 10px;
+  padding-right: 10px;
+}
 .orders-show-page .product-info {
   display: flex;
   flex-direction: row;

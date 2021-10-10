@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\UserAddress;
 use App\Models\Order;
 use App\Services\OrderService;
-
+use Carbon\Carbon;
 
 
 class OrdersController extends Controller
@@ -30,6 +30,14 @@ class OrdersController extends Controller
         $this->authorize('own', $order);
         return view('orders.show', ['order' => $order->load(['items.productSku', 'items.product'])]);
     }
+
+    // public function update(Order $order, Request $request)
+    // {
+    //     $this->authorize('own', $order);
+    //     $order->update(['confirmed_at' => Carbon::now()]);
+    //     dd($order);
+    //     return redirect()->route('orders.show');
+    // }
 
     public function store(OrderRequest $request, OrderService $orderService)
     {

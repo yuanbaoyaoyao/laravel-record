@@ -22,8 +22,8 @@ class CreateOrdersTable extends Migration
             // $table->decimal('total_amount', 10, 2);
             $table->text('remark')->nullable();
             $table->dateTime('confirmed_at')->nullable();
-            // $table->string('payment_method')->nullable();
-            // $table->string('payment_no')->nullable();
+            // $table->string('confirmation_method')->nullable();
+            // $table->string('confirmation_no')->nullable();
             // $table->string('refund_status');
             // $table->string('refund_no')->unique()->nullable();
             $table->boolean('closed')->default(false);
