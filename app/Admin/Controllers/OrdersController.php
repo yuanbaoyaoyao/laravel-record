@@ -4,32 +4,24 @@ namespace App\Admin\Controllers;
 
 use App\Models\Order;
 use Encore\Admin\Controllers\AdminController;
-use Encore\Admin\Form;
 use Encore\Admin\Grid;
-use Encore\Admin\Show;
+use Encore\Admin\Layout\Content;
+
 
 class OrdersController extends AdminController
 {
-    /**
-     * Title for current resource.
-     *
-     * @var string
-     */
-    protected $title = 'Order';
+    protected $title = ' 需求单';
 
-    /**
-     * Make a grid builder.
-     *
-     * @return Grid
-     */
     protected function grid()
     {
-        $grid = new Grid(new Order());
+        $grid = new Grid(new Order);
 
+        // 只展示已确认的需求单，并且默认按确认时间倒序排序
         $grid->model()->whereNotNull('confirmed_at')->orderBy('confirmed_at', 'desc');
 
         $grid->no('需求单流水号');
-        $grid->column('user.name', '领用人');
+        // 展示关联关系的字段时，使用 column 方法
+        $grid->column('user.name', '领用家');
         // $grid->total_amount('总金额')->sortable();
         $grid->confirmed_at('确认时间')->sortable();
         $grid->ship_status('物流')->display(function($value) {
@@ -38,7 +30,7 @@ class OrdersController extends AdminController
         // $grid->refund_status('退款状态')->display(function($value) {
         //     return Order::$refundStatusMap[$value];
         // });
-        // 禁用创建按钮，后台不需要创建订单
+        // 禁用创建按钮，后台不需要创建需求单
         $grid->disableCreateButton();
         $grid->actions(function ($actions) {
             // 禁用删除和编辑按钮
@@ -55,51 +47,11 @@ class OrdersController extends AdminController
         return $grid;
     }
 
-    // /**
-    //  * Make a show builder.
-    //  *
-    //  * @param mixed $id
-    //  * @return Show
-    //  */
-    // protected function detail($id)
-    // {
-    //     $show = new Show(Order::findOrFail($id));
-
-    //     $show->field('id', __('Id'));
-    //     $show->field('no', __('No'));
-    //     $show->field('user_id', __('User id'));
-    //     $show->field('address', __('Address'));
-    //     $show->field('remark', __('Remark'));
-    //     $show->field('confirmed_at', __('Confirmed at'));
-    //     $show->field('closed', __('Closed'));
-    //     $show->field('ship_status', __('Ship status'));
-    //     $show->field('ship_data', __('Ship data'));
-    //     $show->field('extra', __('Extra'));
-    //     $show->field('created_at', __('Created at'));
-    //     $show->field('updated_at', __('Updated at'));
-
-    //     return $show;
-    // }
-
-    // /**
-    //  * Make a form builder.
-    //  *
-    //  * @return Form
-    //  */
-    // protected function form()
-    // {
-    //     $form = new Form(new Order());
-
-    //     $form->text('no', __('No'));
-    //     $form->number('user_id', __('User id'));
-    //     $form->textarea('address', __('Address'));
-    //     $form->textarea('remark', __('Remark'));
-    //     $form->datetime('confirmed_at', __('Confirmed at'))->default(date('Y-m-d H:i:s'));
-    //     $form->switch('closed', __('Closed'));
-    //     $form->text('ship_status', __('Ship status'))->default('pending');
-    //     $form->textarea('ship_data', __('Ship data'));
-    //     $form->textarea('extra', __('Extra'));
-
-    //     return $form;
-    // }
+    public function show($id, Content $content)
+    {
+        return $content
+            ->header('查看订单')
+            // body 方法可以接受 Laravel 的视图作为参数
+            ->body(view('admin.orders.show', ['order' => Order::find($id)]));
+    }
 }
