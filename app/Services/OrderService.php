@@ -16,11 +16,11 @@ class OrderService
     {
         // 开启一个数据库事务
         $order = \DB::transaction(function () use ($user, $address, $remark, $items) {
-            // 更新此地址的最后使用时间
+            // 更新此领用信息的最后使用时间
             $address->update(['last_used_at' => Carbon::now()]);
             // 创建一个订单
             $order   = new Order([
-                'address'      => [ // 将地址信息放入订单中
+                'address'      => [ // 将领用信息信息放入订单中
                     'address'       => $address->full_address,
                     'user'          => $address->user,
                     'contact_phone' => $address->contact_phone,
@@ -47,7 +47,7 @@ class OrderService
                 }
             }
 
-            // 将下单的商品从购物车中移除
+            // 将下单的耗材从购物车中移除
             $skuIds = collect($items)->pluck('sku_id')->all();
             app(CartService::class)->remove($skuIds);
 

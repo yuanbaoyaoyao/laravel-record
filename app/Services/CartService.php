@@ -15,9 +15,9 @@ class CartService
     public function add($skuId, $amount)
     {
         $user = Auth::user();
-        // 从数据库中查询该商品是否已经在购物车中
+        // 从数据库中查询该耗材是否已经在购物车中
         if ($item = $user->cartItems()->where('product_sku_id', $skuId)->first()) {
-            // 如果存在则直接叠加商品数量
+            // 如果存在则直接叠加耗材数量
             $item->update([
                 'amount' => $item->amount + $amount,
             ]);

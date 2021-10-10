@@ -10,8 +10,8 @@ class OrderRequest extends Request
     public function rules()
     {
         return [
-            // 判断用户提交的地址 ID 是否存在于数据库并且属于当前用户
-            // 后面这个条件非常重要，否则恶意用户可以用不同的地址 ID 不断提交订单来遍历出平台所有用户的收货地址
+            // 判断用户提交的领用信息 ID 是否存在于数据库并且属于当前用户
+            // 后面这个条件非常重要，否则恶意用户可以用不同的领用信息 ID 不断提交订单来遍历出平台所有用户的收货领用信息
             'address_id' => [
                 'required',
                 Rule::exists('user_addresses', 'id')->where('user_id', $this->user()->id),

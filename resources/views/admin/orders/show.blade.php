@@ -52,17 +52,17 @@
           @endif
           @else
           <tr>
-            <td colspan="4">
+            {{-- <td colspan="4">
                 {{$order->ship_status}}
-            </td>
+            </td> --}}
           </tr>
           @endif
           @if($order->refund_status !== \App\Models\Order::REFUND_STATUS_PENDING)
           <tr>
-            <td>退款状态：</td>
+            <td>退货状态：</td>
             <td colspan="2">{{ \App\Models\Order::$refundStatusMap[$order->refund_status] }}，理由：{{ $order->extra['refund_reason'] }}</td>
             <td>
-              <!-- 如果订单退款状态是已申请，则展示处理按钮 -->
+              <!-- 如果订单退货状态是已申请，则展示处理按钮 -->
               @if($order->refund_status === \App\Models\Order::REFUND_STATUS_APPLIED)
               <button class="btn btn-sm btn-success" id="btn-refund-agree">同意</button>
               <button class="btn btn-sm btn-danger" id="btn-refund-disagree">不同意</button>
@@ -81,7 +81,7 @@
       $('#btn-refund-disagree').click(function() {
         // Laravel-Admin 使用的 SweetAlert 版本与我们在前台使用的版本不一样，因此参数也不太一样
         swal({
-          title: '输入拒绝退款理由',
+          title: '输入拒绝退货理由',
           input: 'text',
           showCancelButton: true,
           confirmButtonText: "确认",
@@ -124,7 +124,7 @@
     // 同意 按钮的点击事件
     $('#btn-refund-agree').click(function() {
       swal({
-        title: '确认要将款项退还给用户？',
+        title: '确认允许用户退货？',
         type: 'warning',
         showCancelButton: true,
         confirmButtonText: "确认",
@@ -135,7 +135,7 @@
             url: '{{ route('admin.orders.handle_refund', [$order->id]) }}',
             type: 'POST',
             data: JSON.stringify({
-              agree: true, // 代表同意退款
+              agree: true, // 代表同意退货
               _token: LA.token,
             }),
             contentType: 'application/json',

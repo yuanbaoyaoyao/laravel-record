@@ -31,7 +31,7 @@ class ProductsController extends AdminController
         $grid->in_warehouse('在库')->display(function ($value) {
             return $value ? '是' : '否';
         });
-        $grid->sold_count('销量');
+        $grid->sold_count('发放量');
 
         $grid->actions(function ($actions) {
             $actions->disableView();
@@ -46,28 +46,6 @@ class ProductsController extends AdminController
 
         return $grid;
     }
-
-    /**
-     * Make a show builder.
-     *
-     * @param mixed $id
-     * @return Show
-     */
-    // protected function detail($id)
-    // {
-    //     $show = new Show(Product::findOrFail($id));
-
-    //     $show->field('id', __('Id'));
-    //     $show->field('title', __('Title'));
-    //     $show->field('description', __('Description'));
-    //     $show->field('image', __('Image'));
-    //     $show->field('in_warehouse', __('In warehouse'));
-    //     $show->field('sold_count', __('Sold count'));
-    //     $show->field('created_at', __('Created at'));
-    //     $show->field('updated_at', __('Updated at'));
-
-    //     return $show;
-    // }
 
     /**
      * Make a form builder.

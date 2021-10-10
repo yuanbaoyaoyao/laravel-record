@@ -14,7 +14,7 @@
         <div class="title">{{ $product->title }}</div>
         {{-- <div class="price"><label>价格</label><em>￥</em><span>{{ $product->price }}</span></div> --}}
         {{-- <div class="sales_and_reviews">
-          <div class="sold_count">累计销量 <span class="count">{{ $product->sold_count }}</span></div>
+          <div class="sold_count">累计发放量 <span class="count">{{ $product->sold_count }}</span></div>
           <div class="review_count">累计评价 <span class="count">{{ $product->review_count }}</span></div>
           <div class="rating" title="评分 {{ $product->rating }}">评分 <span class="count">{{ str_repeat('★', floor($product->rating)) }}{{ str_repeat('☆', 5 - floor($product->rating)) }}</span></div>
         </div> --}}

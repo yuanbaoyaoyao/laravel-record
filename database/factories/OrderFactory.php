@@ -1,28 +1,33 @@
 <?php
 
-namespace Database\Factories;
-
+use App\Models\CouponCode;
 use App\Models\Order;
-use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\User;
+use Faker\Generator as Faker;
 
-class OrderFactory extends Factory
-{
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    protected $model = Order::class;
+$factory->define(Order::class, function (Faker $faker) {
+    // 随机取一个用户
+    $user = User::query()->inRandomOrder()->first();
+    // 随机取一个该用户的地址
+    $address = $user->addresses()->inRandomOrder()->first();
+    // 10% 的概率把订单标记为退款
+    $refund = random_int(0, 10) < 1;
+    // 随机生成发货状态
+    $ship = $faker->randomElement(array_keys(Order::$shipStatusMap));
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
-    public function definition()
-    {
-        return [
-            //
-        ];
-    }
-}
+    return [
+        'address'        => [
+            'address'       => $address->full_address,
+            'zip'           => $address->zip,
+            'user'  => $address->user,
+            'contact_phone' => $address->contact_phone,
+        ],
+        'remark'         => $faker->sentence,
+        'confirmed_at'        => $faker->dateTimeBetween('-30 days'), // 30天前到现在任意时间点
+        'refund_status'  => $refund ? Order::REFUND_STATUS_SUCCESS : Order::REFUND_STATUS_PENDING,
+        'closed'         => false,
+        'ship_status'    => $ship,
+        'extra'          => $refund ? ['refund_reason' => $faker->sentence] : [],
+        'user_id'        => $user->id,
+    ];
+});

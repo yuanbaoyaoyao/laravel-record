@@ -42,7 +42,7 @@
     </table>
     <div class="order-bottom">
       <div class="order-info">
-        <div class="line"><div class="line-label">收货地址：</div><div class="line-value">{{ join(' ', $order->address) }}</div></div>
+        <div class="line"><div class="line-label">领用信息：</div><div class="line-value">{{ join(' ', $order->address) }}</div></div>
         <div class="line"><div class="line-label">需求单备注：</div><div class="line-value">{{ $order->remark ?: '-' }}</div></div>
         <div class="line"><div class="line-label">需求单编号：</div><div class="line-value">{{ $order->no }}</div></div>
         @if($order->confirmed_at && $order->refund_status !== \App\Models\Order::REFUND_STATUS_PENDING)
@@ -66,7 +66,7 @@
           <div class="value">
             @if($order->confirmed_at)
               @if($order->refund_status === \App\Models\Order::REFUND_STATUS_PENDING)
-                已确认
+                已确认订单
               @else
                 {{ \App\Models\Order::$refundStatusMap[$order->refund_status] }}
               @endif
@@ -102,7 +102,7 @@
 
         @if(isset($order->extra['refund_disagree_reason']))
         <div>
-          <span>拒绝退款理由：</span>
+          <span>拒绝退货理由：</span>
           <div class="value">{{ $order->extra['refund_disagree_reason'] }}</div>
         </div>
         @endif
@@ -120,7 +120,7 @@
     $('#btn-receive').click(function() {
       // 弹出确认框
       swal({
-        title: "确认已经收到商品？",
+        title: "确认已经收到耗材？",
         icon: "warning",
         dangerMode: true,
         buttons: ['取消', '确认收到'],

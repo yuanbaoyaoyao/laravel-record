@@ -16,29 +16,37 @@
           </div>
         </div>
       </form>
-      <table class="table table-sm table-striped">
+      <table class="table table-striped">
         <thead>
-          <tr>
-            <th class="text-xs-center">#</th>
-            <th>图片</th> <th>耗材名称</th> <th>描述</th>
-            <th class="text-xs-right">选项</th>
-          </tr>
+        <tr>
+          {{-- <th><input type="checkbox" id="select-all"></th> --}}
+          <th>#</th>
+          <th>图片</th>
+          <th>耗材名称</th>
+          <th>描述</th>
+          <th>选项</th>
+        </tr>
         </thead>
-
-        <tbody>
-          @foreach($products as $product)
+        <tbody class="product_list">
+        @foreach($products as $product)
           <tr>
-            <td class="text-xs-center"><strong>{{$product->id}}</strong></td>
-
-            <td>{{$product->title}}</td> <td>{{$product->title}}</td> <td>{{$product->description}}</td>
-
-            <td class="text-xs-right">
-                <a href="{{ route('products.show', ['product' => $product->id]) }}">
-                查看详情
+            <td>
+                {{ $product->id }}
+            </td>
+            <td class="product_info">
+              <div class="preview">
+                <a target="_blank" href="{{ route('products.show', [$product->id]) }}">
+                  <img src="{{ $product->image_url }}">
                 </a>
+              </div>
+            </td>
+            <td>{{$product->title}}</td>
+            <td>{{$product->description}}</td>
+            <td>
+              <a href="{{route('products.show',['product'=>$product->id])}}">查看详情</a>
             </td>
           </tr>
-          @endforeach
+        @endforeach
         </tbody>
       </table>
 
