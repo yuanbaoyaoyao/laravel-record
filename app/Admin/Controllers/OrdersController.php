@@ -9,6 +9,7 @@ use Encore\Admin\Layout\Content;
 use Illuminate\Http\Request;
 use App\Exceptions\InvalidRequestException;
 use App\Http\Requests\Admin\HandleRefundRequest;
+use App\Exceptions\InternalException;
 
 
 
@@ -98,6 +99,13 @@ class OrdersController extends AdminController
         // 是否同意退货
         if ($request->input('agree')) {
             // 同意退货的逻辑这里先留空
+            $extra = $order->extra ?: [];
+            unset($extra['refund_disagree_reason']);
+            $order->update([
+                'extra' => $extra,
+            ]);
+            // 调用退款逻辑
+            $this->_refundOrder($order);
             // todo
         } else {
             // 将拒绝退货理由放到需求单的 extra 字段中
@@ -111,5 +119,12 @@ class OrdersController extends AdminController
         }
 
         return $order;
+    }
+
+    protected function _refundOrder(Order $order)
+    {
+        $order->update([
+            'refund_status' => Order::REFUND_STATUS_SUCCESS,
+        ]);
     }
 }
