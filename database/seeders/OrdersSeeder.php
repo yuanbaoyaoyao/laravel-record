@@ -10,10 +10,10 @@ class OrdersSeeder extends Seeder
     public function run()
     {
         $faker = app(Faker\Generator::class);
-        $orders = factory(Order::class, 100)->create();
+        $orders = Order::factory()->count(100)->create();
         $products = collect([]);
         foreach ($orders as $order) {
-            $items = factory(OrderItem::class, random_int(1, 3))->create([
+            $items = OrderItem::factory()->count(random_int(1, 3))->create([
                 'order_id'    => $order->id,
             ]);
 
