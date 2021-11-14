@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class ProductsController extends Controller
 {
-    //
     public function index(Request $request)
     {
         $builder = Product::query()->where('in_warehouse', true);
@@ -35,7 +34,7 @@ class ProductsController extends Controller
         ]);
     }
 
-    public function show(Product $product, Request $request)
+    public function show(Product $product)
     {
         if (!$product->in_warehouse) {
             throw new InvalidRequestException('耗材未上架');
@@ -43,4 +42,6 @@ class ProductsController extends Controller
 
         return view('products.show', ['product' => $product]);
     }
+
+
 }

@@ -2,13 +2,16 @@
 
 namespace App\Admin\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Encore\Admin\Controllers\AdminController;
+use Encore\Admin\Layout\Content;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
-use Encore\Admin\Show;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class ProductsController extends AdminController
+class ProductsController extends Controller
 {
     /**
      * Title for current resource.
@@ -22,9 +25,18 @@ class ProductsController extends AdminController
      *
      * @return Grid
      */
+    public function index(Content $content)
+    {
+        return $content
+//            ->title($this->title())
+            ->description($this->description['index'] ?? trans('admin.list'))
+            ->body($this->grid());
+    }
+
     protected function grid()
     {
         $grid = new Grid(new Product());
+
 
         $grid->id('ID')->sortable();
         $grid->title('耗材名称');
@@ -34,7 +46,7 @@ class ProductsController extends AdminController
         $grid->sold_count('发放量');
 
         $grid->actions(function ($actions) {
-            $actions->disableView();
+            // $actions->disableView();
             $actions->disableDelete();
         });
         $grid->tools(function ($tools) {
@@ -62,7 +74,7 @@ class ProductsController extends AdminController
 
         $form->quill('description', '耗材描述')->rules('required');
 
-        $form->radio('in_warehouse', '在库')->options(['1' => '是', '0'=> '否'])->default('0');
+        $form->radio('in_warehouse', '在库')->options(['1' => '是', '0' => '否'])->default('0');
 
         $form->hasMany('skus', 'SKU 列表', function (Form\NestedForm $form) {
             $form->text('title', 'SKU 名称')->rules('required');
@@ -72,4 +84,72 @@ class ProductsController extends AdminController
 
         return $form;
     }
+
+    //显示耗材领用详情
+    public function show($id, Content $content, Request $request)
+    {
+        $data = DB::table('order_items',)
+            ->join('product_skus', 'product_skus.id', '=', 'order_items.product_sku_id')
+            ->join('orders', 'orders.id', '=', 'order_items.order_id')
+            ->join('users', 'users.id', '=', 'orders.user_id')
+            ->select('product_skus.title', 'users.name', 'order_items.amount', 'orders.confirmed_at')
+            ->where('order_items.product_id', '=', $id)
+            ->orderBy('orders.confirmed_at', 'desc');
+//            ->paginate(10);
+        $builder = $data;
+        if ($search = $request->input('search', '')) {
+            $like = '%' . $search . '%';
+            // 模糊搜索SKU 标题、领用人
+            $builder->where(function ($query) use ($like) {
+                $query->where('title', 'like', $like)
+                    ->orWhere('name', 'like', $like);
+            });
+        }
+
+        $data = $builder->paginate(10);
+
+//        return $content->title('详情')
+//            ->description('简介')
+//            ->body(view('admin.products.show', ['product' => Product::find($id), 'data' => $data]));
+        return $content->title('详情')
+            ->description('简介')
+            ->body(view('admin.products.show',
+                ['product' => Product::find($id),
+                    'data' => $data,
+                    'filters' => [
+                        'search' => $search,
+                    ],]));
+
+    }
+
+    //耗材领用详情搜索功能
+    public function search(Request $request, Content $content, $id, $data)
+    {
+        $builder = $data::query();
+        if ($search = $request->input('search', '')) {
+            $like = '%' . $search . '%';
+            // 模糊搜索SKU 标题、领用人
+            $builder->where(function ($query) use ($like) {
+                $query->where('title', 'like', $like)
+                    ->orWhere('name', 'like', $like);
+            });
+        }
+
+        $data = $builder->paginate(10);
+
+        return $content->title('详情')
+            ->description('简介')
+            ->body(view('admin.products.show', ['product' => Product::find($id),
+                'data' => $data,
+                'filters' => [
+                    'search' => $search,
+                ],]));
+//        return view('admin.products.show', [
+//            'data' => $data,
+//            'filters' => [
+//                'search' => $search,
+//            ],
+//        ]);
+    }
+
 }

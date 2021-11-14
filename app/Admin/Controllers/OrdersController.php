@@ -56,6 +56,7 @@ class OrdersController extends AdminController
             ->header('查看需求单')
 
             ->body(view('admin.orders.show', ['order' => Order::find($id)]));
+
     }
 
         public function ship(Order $order, Request $request)
