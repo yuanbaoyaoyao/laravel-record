@@ -73,6 +73,9 @@ class OrdersController extends AdminController
         $order->update([
             'ship_status' => Order::SHIP_STATUS_DELIVERED,
         ]);
+        //发货后用户直接确认收货
+        $order->update(['ship_status' => Order::SHIP_STATUS_RECEIVED]);
+
 
         return redirect()->back();
     }
