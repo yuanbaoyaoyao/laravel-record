@@ -27,6 +27,9 @@ class OrderService
             ]);
             $order->user()->associate($user);
             $order->save();
+            //直接确认订单
+            $order->update(['confirmed_at' => Carbon::now()]);
+            $order->save();
 
             foreach ($items as $data) {
                 $sku  = ProductSku::find($data['sku_id']);
