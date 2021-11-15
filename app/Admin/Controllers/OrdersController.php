@@ -10,6 +10,7 @@ use Encore\Admin\Layout\Content;
 use Illuminate\Http\Request;
 use App\Exceptions\InvalidRequestException;
 use App\Http\Requests\Admin\HandleRefundRequest;
+use Illuminate\Support\Facades\DB;
 
 
 class OrdersController extends AdminController
@@ -19,7 +20,6 @@ class OrdersController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Order);
-
 
         $grid->model()->whereNotNull('confirmed_at')->orderBy('confirmed_at', 'desc');
 
@@ -60,7 +60,6 @@ class OrdersController extends AdminController
 
     public function ship(Order $order, Request $request)
     {
-
         if (!$order->confirmed_at) {
             throw new InvalidRequestException('该需求单未确认');
         }
@@ -69,14 +68,14 @@ class OrdersController extends AdminController
             throw new InvalidRequestException('该需求单已发放');
         }
 
-        $order->update([
-            'ship_status' => Order::SHIP_STATUS_DELIVERED,
-        ]);
+//        $order->update([
+//            'ship_status' => Order::SHIP_STATUS_DELIVERED,
+//        ]);
         //发货后用户直接确认收货
         $order->update(['ship_status' => Order::SHIP_STATUS_RECEIVED]);
-        //发货后设定发货时间
-        $order->update(['delivered_at' => Carbon::now()]);
 
+        //发货后设定发货时间
+        DB::table('orders')->where('id', '=', $order->id)->update(['delivered_at' => Carbon::now()]);
 
         return redirect()->back();
     }
