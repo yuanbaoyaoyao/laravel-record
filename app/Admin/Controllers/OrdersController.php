@@ -3,13 +3,13 @@
 namespace App\Admin\Controllers;
 
 use App\Models\Order;
+use Carbon\Carbon;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Illuminate\Http\Request;
 use App\Exceptions\InvalidRequestException;
 use App\Http\Requests\Admin\HandleRefundRequest;
-
 
 
 class OrdersController extends AdminController
@@ -27,10 +27,10 @@ class OrdersController extends AdminController
 
         $grid->column('user.name', '领用人');
         $grid->confirmed_at('确认时间')->sortable();
-        $grid->ship_status('发放状态')->display(function($value) {
+        $grid->ship_status('发放状态')->display(function ($value) {
             return Order::$shipStatusMap[$value];
         });
-        $grid->refund_status('退货状态')->display(function($value) {
+        $grid->refund_status('退货状态')->display(function ($value) {
             return Order::$refundStatusMap[$value];
         });
 
@@ -54,12 +54,11 @@ class OrdersController extends AdminController
     {
         return $content
             ->header('查看需求单')
-
             ->body(view('admin.orders.show', ['order' => Order::find($id)]));
 
     }
 
-        public function ship(Order $order, Request $request)
+    public function ship(Order $order, Request $request)
     {
 
         if (!$order->confirmed_at) {
@@ -75,6 +74,8 @@ class OrdersController extends AdminController
         ]);
         //发货后用户直接确认收货
         $order->update(['ship_status' => Order::SHIP_STATUS_RECEIVED]);
+        //发货后设定发货时间
+        $order->update(['delivered_at' => Carbon::now()]);
 
 
         return redirect()->back();
@@ -98,7 +99,7 @@ class OrdersController extends AdminController
             $extra['refund_disagree_reason'] = $request->input('reason');
             $order->update([
                 'refund_status' => Order::REFUND_STATUS_PENDING,
-                'extra'         => $extra,
+                'extra' => $extra,
             ]);
         }
 

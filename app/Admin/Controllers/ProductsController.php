@@ -91,9 +91,10 @@ class ProductsController extends Controller
             ->join('product_skus', 'product_skus.id', '=', 'order_items.product_sku_id')
             ->join('orders', 'orders.id', '=', 'order_items.order_id')
             ->join('users', 'users.id', '=', 'orders.user_id')
-            ->select('product_skus.title', 'users.name', 'order_items.amount', 'orders.confirmed_at')
+            ->select('product_skus.title', 'users.name', 'order_items.amount', 'orders.delivered_at')
             ->where('order_items.product_id', '=', $id)
-            ->orderBy('orders.confirmed_at', 'desc');
+            ->WhereNotNull('orders.delivered_at')
+            ->orderBy('orders.delivered_at', 'desc');
         $builder = $data;
         if ($search = $request->input('search', '')) {
             $like = '%' . $search . '%';

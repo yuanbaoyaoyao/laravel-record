@@ -39,7 +39,7 @@
                 <tr>
                     <th>{{$d->title}}</th>
                     <th>{{$d->name}}</th>
-                    <th>{{$d->confirmed_at}}</th>
+                    <th>{{$d->delivered_at}}</th>
                     <th>{{$d->amount}}</th>
                 </tr>
             @endforeach
