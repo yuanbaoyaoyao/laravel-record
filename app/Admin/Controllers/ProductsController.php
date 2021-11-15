@@ -4,7 +4,6 @@ namespace App\Admin\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
-use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -95,7 +94,6 @@ class ProductsController extends Controller
             ->select('product_skus.title', 'users.name', 'order_items.amount', 'orders.confirmed_at')
             ->where('order_items.product_id', '=', $id)
             ->orderBy('orders.confirmed_at', 'desc');
-//            ->paginate(10);
         $builder = $data;
         if ($search = $request->input('search', '')) {
             $like = '%' . $search . '%';
@@ -106,11 +104,8 @@ class ProductsController extends Controller
             });
         }
 
-        $data = $builder->paginate(10);
+        $data = $builder->paginate(20);
 
-//        return $content->title('详情')
-//            ->description('简介')
-//            ->body(view('admin.products.show', ['product' => Product::find($id), 'data' => $data]));
         return $content->title('详情')
             ->description('简介')
             ->body(view('admin.products.show',
@@ -120,36 +115,6 @@ class ProductsController extends Controller
                         'search' => $search,
                     ],]));
 
-    }
-
-    //耗材领用详情搜索功能
-    public function search(Request $request, Content $content, $id, $data)
-    {
-        $builder = $data::query();
-        if ($search = $request->input('search', '')) {
-            $like = '%' . $search . '%';
-            // 模糊搜索SKU 标题、领用人
-            $builder->where(function ($query) use ($like) {
-                $query->where('title', 'like', $like)
-                    ->orWhere('name', 'like', $like);
-            });
-        }
-
-        $data = $builder->paginate(10);
-
-        return $content->title('详情')
-            ->description('简介')
-            ->body(view('admin.products.show', ['product' => Product::find($id),
-                'data' => $data,
-                'filters' => [
-                    'search' => $search,
-                ],]));
-//        return view('admin.products.show', [
-//            'data' => $data,
-//            'filters' => [
-//                'search' => $search,
-//            ],
-//        ]);
     }
 
 }
