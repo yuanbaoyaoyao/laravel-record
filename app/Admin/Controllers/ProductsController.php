@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -12,6 +13,8 @@ use Illuminate\Support\Facades\DB;
 
 class ProductsController extends Controller
 {
+    use HasResourceActions;
+
     /**
      * Title for current resource.
      *
@@ -65,6 +68,7 @@ class ProductsController extends Controller
      */
     protected function form()
     {
+
         $form = new Form(new Product);
 
         $form->text('title', '耗材名称')->rules('required');
@@ -82,6 +86,12 @@ class ProductsController extends Controller
         });
 
         return $form;
+    }
+
+    public function create(Content $content)
+    {
+        return $content
+            ->body($this->form());
     }
 
     //显示耗材领用详情
@@ -117,5 +127,4 @@ class ProductsController extends Controller
                     ],]));
 
     }
-
 }
