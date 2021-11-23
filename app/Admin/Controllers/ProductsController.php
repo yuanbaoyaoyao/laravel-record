@@ -75,7 +75,7 @@ class ProductsController extends Controller
 
         $form->image('image', '封面图片')->rules('required|image');
 
-        $form->quill('description', '耗材描述')->rules('required');
+//        $form->quill('description', '耗材描述')->rules('required');
 
         $form->radio('in_warehouse', '在库')->options(['1' => '是', '0' => '否'])->default('0');
 
@@ -92,6 +92,12 @@ class ProductsController extends Controller
     {
         return $content
             ->body($this->form());
+    }
+
+    public function edit($id, Content $content)
+    {
+        return $content
+            ->body($this->form()->edit($id));
     }
 
     //显示耗材领用详情

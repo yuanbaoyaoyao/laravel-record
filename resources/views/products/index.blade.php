@@ -22,7 +22,7 @@
           <th>#</th>
           <th>图片</th>
           <th>耗材名称</th>
-          <th>描述</th>
+{{--          <th>描述</th>--}}
           <th>选项</th>
         </tr>
         </thead>
@@ -40,7 +40,7 @@
               </div>
             </td>
             <td>{{$product->title}}</td>
-            <td>{{$product->description}}</td>
+{{--            <td>{{$product->description}}</td>--}}
             <td>
               <a href="{{route('products.show',['product'=>$product->id])}}">查看详情</a>
             </td>

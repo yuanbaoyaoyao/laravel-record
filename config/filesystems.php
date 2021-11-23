@@ -66,6 +66,7 @@ return [
     |
     */
 
+    //docker sail在镜像中执行命令
     'links' => [
         public_path('storage') => storage_path('app/public'),
     ],
