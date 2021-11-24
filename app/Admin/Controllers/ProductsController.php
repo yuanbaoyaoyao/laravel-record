@@ -49,7 +49,7 @@ class ProductsController extends Controller
 
         $grid->actions(function ($actions) {
             // $actions->disableView();
-            $actions->disableDelete();
+//            $actions->disableDelete();
         });
         $grid->tools(function ($tools) {
             // 禁用批量删除按钮
@@ -75,13 +75,13 @@ class ProductsController extends Controller
 
         $form->image('image', '封面图片')->rules('required|image');
 
-//        $form->quill('description', '耗材描述')->rules('required');
+        $form->quill('description', '耗材描述')->rules('required');
 
         $form->radio('in_warehouse', '在库')->options(['1' => '是', '0' => '否'])->default('0');
 
-        $form->hasMany('skus', 'SKU 列表', function (Form\NestedForm $form) {
-            $form->text('title', 'SKU 名称')->rules('required');
-            $form->text('description', 'SKU 描述')->rules('required');
+        $form->hasMany('skus', '型号 列表', function (Form\NestedForm $form) {
+            $form->text('title', '型号 名称')->rules('required');
+            $form->text('description', '型号 描述')->rules('required');
             $form->text('stock', '剩余库存')->rules('required|integer|min:0');
         });
 
@@ -99,6 +99,7 @@ class ProductsController extends Controller
         return $content
             ->body($this->form()->edit($id));
     }
+
 
     //显示耗材领用详情
     public function show($id, Content $content, Request $request)
