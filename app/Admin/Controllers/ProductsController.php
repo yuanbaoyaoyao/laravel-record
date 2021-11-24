@@ -48,8 +48,6 @@ class ProductsController extends Controller
         $grid->sold_count('发放量');
 
         $grid->actions(function ($actions) {
-            // $actions->disableView();
-//            $actions->disableDelete();
         });
         $grid->tools(function ($tools) {
             // 禁用批量删除按钮

@@ -10,7 +10,8 @@ Route::group([
     'middleware' => config('admin.route.middleware'),
 ], function (Router $router) {
     $router->get('/', 'HomeController@index');
-    $router->get('users', 'UsersController@index');
+    $router->get('users', 'UsersController@index')->name('admin.users.index');
+    $router->get('users/{id}', 'UsersController@show')->name('admin.users.show');
     $router->get('users/export/', 'UsersController@export');
     $router->get('products', 'ProductsController@index')->name('admin.products.index');
     $router->get('products/create', 'ProductsController@create');
